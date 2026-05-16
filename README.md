@@ -348,6 +348,17 @@ npx wrangler tail
 - **[Cloudflare KV](https://developers.cloudflare.com/kv/)** — Key-value storage
 - **[Cloudflare Cron Triggers](https://developers.cloudflare.com/workers/platform/cron-triggers/)** — Scheduled execution
 
+### Providers
+
+- **[Mimo](https://token-plan-sgp.xiaomimimo.com/)** — Xiaomi Mimo AI provider (primary)
+- **[OpenRouter](https://openrouter.ai/)** — Multi-provider aggregator
+- **[OpenAI](https://platform.openai.com/)** — GPT models
+- **[Anthropic](https://anthropic.com/)** — Claude models
+- **[Google AI](https://ai.google.dev/)** — Gemini models
+- **[DeepSeek](https://deepseek.com/)** — DeepSeek models
+- **[Groq](https://groq.com/)** — Fast inference
+- **[xAI](https://x.ai/)** — Grok models
+
 ### Inspired By
 
 - **[Hermes Agent](https://hermes-agent.nousresearch.com/)** — AI agent framework
@@ -356,7 +367,8 @@ npx wrangler tail
 
 ### Special Thanks
 
-- **Cloudflare** — For the incredible edge computing platform
+- **[Cloudflare](https://cloudflare.com/)** — For the incredible edge computing platform
+- **[Xiaomi Mimo](https://token-plan-sgp.xiaomimimo.com/)** — For reliable AI infrastructure
 - **Open Source Community** — For tools and inspiration
 - **All Contributors** — Who help improve Synapse
 
