@@ -1,0 +1,21 @@
+name = "synapse"
+main = "src/worker.js"
+compatibility_date = "2024-12-01"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+DASHBOARD_PASSWORD = "your-password-here"
+TELEGRAM_BOT_TOKEN = ""
+TELEGRAM_CHAT_ID = ""
+
+[[d1_databases]]
+binding = "DB"
+database_name = "synapse-db"
+database_id = "your-database-id-here"
+
+[[kv_namespaces]]
+binding = "KV"
+id = "your-kv-id-here"
+
+[triggers]
+crons = ["*/30 * * * *"]

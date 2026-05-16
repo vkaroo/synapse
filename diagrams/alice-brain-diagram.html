@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alice Brain Architecture</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #020617;
+    color: #e2e8f0;
+    font-family: 'JetBrains Mono', monospace;
+    padding: 40px;
+    min-height: 100vh;
+  }
+  .header {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  .header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #f8fafc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+  .header .dot {
+    width: 12px;
+    height: 12px;
+    background: #22d3ee;
+    border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(34, 211, 238, 0.4); }
+    50% { opacity: 0.8; box-shadow: 0 0 0 8px rgba(34, 211, 238, 0); }
+  }
+  .header p {
+    color: #94a3b8;
+    font-size: 13px;
+    margin-top: 8px;
+  }
+  .diagram-container {
+    background: #0f172a;
+    border: 1px solid #1e293b;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 30px;
+    overflow-x: auto;
+  }
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+  }
+  .card {
+    background: #0f172a;
+    border: 1px solid #1e293b;
+    border-radius: 10px;
+    padding: 20px;
+  }
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+  }
+  .card-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+  .card-dot.cyan { background: #22d3ee; }
+  .card-dot.emerald { background: #34d399; }
+  .card-dot.violet { background: #a78bfa; }
+  .card-dot.amber { background: #fbbf24; }
+  .card-dot.rose { background: #fb7185; }
+  .card h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #f1f5f9;
+  }
+  .card ul {
+    list-style: none;
+    font-size: 12px;
+    color: #94a3b8;
+    line-height: 1.8;
+  }
+  .footer {
+    text-align: center;
+    font-size: 11px;
+    color: #475569;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>
+    <span class="dot"></span>
+    Alice Brain Architecture
+  </h1>
+  <p>Cloudflare Worker + D1 Database | Autonomous Learning System</p>
+</div>
+
+<div class="diagram-container">
+<svg viewBox="0 0 1000 620" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;">
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1e293b" stroke-width="0.5"/>
+    </pattern>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#22d3ee"/>
+    </marker>
+    <marker id="arrow-emerald" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#34d399"/>
+    </marker>
+    <marker id="arrow-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#fbbf24"/>
+    </marker>
+    <marker id="arrow-rose" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#fb7185"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1000" height="620" fill="#020617"/>
+  <rect width="1000" height="620" fill="url(#grid)"/>
+
+  <!-- ===== CLOUDFLARE BRAIN (Top) ===== -->
+  <!-- Brain Region -->
+  <rect x="30" y="30" width="940" height="280" rx="12" fill="none" stroke="#fbbf24" stroke-width="2" stroke-dasharray="8,4"/>
+  <text x="50" y="55" fill="#fbbf24" font-size="14" font-weight="700">☁️ CLOUDFLARE BRAIN</text>
+  <text x="50" y="72" fill="#94a3b8" font-size="10">ai-router.jembatanhitam666.workers.dev</text>
+
+  <!-- Consciousness (Cron) -->
+  <rect x="60" y="90" width="200" height="80" rx="6" fill="rgba(8, 51, 68, 0.4)" stroke="#22d3ee" stroke-width="1.5"/>
+  <rect x="60" y="90" width="200" height="80" rx="6" fill="#0f172a" opacity="0.5"/>
+  <rect x="60" y="90" width="200" height="80" rx="6" fill="rgba(8, 51, 68, 0.4)" stroke="#22d3ee" stroke-width="1.5"/>
+  <text x="160" y="115" fill="#22d3ee" font-size="11" font-weight="600" text-anchor="middle">🧠 CONSCIOUSNESS</text>
+  <text x="160" y="132" fill="#94a3b8" font-size="9" text-anchor="middle">Cron: */30 * * * *</text>
+  <text x="160" y="147" fill="#94a3b8" font-size="9" text-anchor="middle">Think → Analyze → Decide</text>
+  <text x="160" y="162" fill="#64748b" font-size="8" text-anchor="middle">Auto-think setiap 30 menit</text>
+
+  <!-- Long-term Memory (D1) -->
+  <rect x="290" y="90" width="200" height="80" rx="6" fill="rgba(76, 29, 149, 0.4)" stroke="#a78bfa" stroke-width="1.5"/>
+  <rect x="290" y="90" width="200" height="80" rx="6" fill="#0f172a" opacity="0.5"/>
+  <rect x="290" y="90" width="200" height="80" rx="6" fill="rgba(76, 29, 149, 0.4)" stroke="#a78bfa" stroke-width="1.5"/>
+  <text x="390" y="115" fill="#a78bfa" font-size="11" font-weight="600" text-anchor="middle">📚 LONG-TERM MEMORY</text>
+  <text x="390" y="132" fill="#94a3b8" font-size="9" text-anchor="middle">D1 Database</text>
+  <text x="390" y="147" fill="#94a3b8" font-size="9" text-anchor="middle">Soul • Events • Patterns</text>
+  <text x="390" y="162" fill="#64748b" font-size="8" text-anchor="middle">Persist meski restart</text>
+
+  <!-- Learning Engine -->
+  <rect x="520" y="90" width="200" height="80" rx="6" fill="rgba(6, 78, 59, 0.4)" stroke="#34d399" stroke-width="1.5"/>
+  <rect x="520" y="90" width="200" height="80" rx="6" fill="#0f172a" opacity="0.5"/>
+  <rect x="520" y="90" width="200" height="80" rx="6" fill="rgba(6, 78, 59, 0.4)" stroke="#34d399" stroke-width="1.5"/>
+  <text x="620" y="115" fill="#34d399" font-size="11" font-weight="600" text-anchor="middle">🔮 LEARNING ENGINE</text>
+  <text x="620" y="132" fill="#94a3b8" font-size="9" text-anchor="middle">Pattern Recognition</text>
+  <text x="620" y="147" fill="#94a3b8" font-size="9" text-anchor="middle">Confidence: 0.5 → 0.99</text>
+  <text x="620" y="162" fill="#64748b" font-size="8" text-anchor="middle">Auto-learn dari experience</text>
+
+  <!-- Notification -->
+  <rect x="750" y="90" width="200" height="80" rx="6" fill="rgba(136, 19, 55, 0.4)" stroke="#fb7185" stroke-width="1.5"/>
+  <rect x="750" y="90" width="200" height="80" rx="6" fill="#0f172a" opacity="0.5"/>
+  <rect x="750" y="90" width="200" height="80" rx="6" fill="rgba(136, 19, 55, 0.4)" stroke="#fb7185" stroke-width="1.5"/>
+  <text x="850" y="115" fill="#fb7185" font-size="11" font-weight="600" text-anchor="middle">📡 NOTIFICATIONS</text>
+  <text x="850" y="132" fill="#94a3b8" font-size="9" text-anchor="middle">Telegram Bot</text>
+  <text x="850" y="147" fill="#94a3b8" font-size="9" text-anchor="middle">Status • Alerts • Insights</text>
+  <text x="850" y="162" fill="#64748b" font-size="8" text-anchor="middle">Auto-notify user</text>
+
+  <!-- Soul Storage -->
+  <rect x="180" y="200" width="280" height="90" rx="6" fill="rgba(251, 146, 60, 0.3)" stroke="#fb923c" stroke-width="1.5"/>
+  <rect x="180" y="200" width="280" height="90" rx="6" fill="#0f172a" opacity="0.5"/>
+  <rect x="180" y="200" width="280" height="90" rx="6" fill="rgba(251, 146, 60, 0.3)" stroke="#fb923c" stroke-width="1.5"/>
+  <text x="320" y="225" fill="#fb923c" font-size="11" font-weight="600" text-anchor="middle">💾 SOUL STORAGE</text>
+  <text x="320" y="242" fill="#94a3b8" font-size="9" text-anchor="middle">Identity • Preferences • Behavior • Memory</text>
+  <text x="320" y="257" fill="#94a3b8" font-size="9" text-anchor="middle">Version: v3 | Updated: 2026-05-16</text>
+  <text x="320" y="272" fill="#64748b" font-size="8" text-anchor="middle">Central soul, persist meski ganti VPS</text>
+
+  <!-- API Gateway -->
+  <rect x="540" y="200" width="280" height="90" rx="6" fill="rgba(30, 41, 59, 0.5)" stroke="#94a3b8" stroke-width="1.5"/>
+  <rect x="540" y="200" width="280" height="90" rx="6" fill="#0f172a" opacity="0.5"/>
+  <rect x="540" y="200" width="280" height="90" rx="6" fill="rgba(30, 41, 59, 0.5)" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="680" y="225" fill="#94a3b8" font-size="11" font-weight="600" text-anchor="middle">🌐 API GATEWAY</text>
+  <text x="680" y="242" fill="#94a3b8" font-size="9" text-anchor="middle">Public: /soul /brain/*</text>
+  <text x="680" y="257" fill="#94a3b8" font-size="9" text-anchor="middle">Auth: /api/soul /api/brain/*</text>
+  <text x="680" y="272" fill="#64748b" font-size="8" text-anchor="middle">REST API • JSON • CORS</text>
+
+  <!-- Internal arrows -->
+  <!-- Consciousness → Long-term Memory -->
+  <line x1="260" y1="130" x2="290" y2="130" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <!-- Long-term Memory → Learning Engine -->
+  <line x1="490" y1="130" x2="520" y2="130" stroke="#a78bfa" stroke-width="1.5" marker-end="url(#arrow-emerald)"/>
+  <!-- Learning Engine → Notification -->
+  <line x1="720" y1="130" x2="750" y2="130" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrow-rose)"/>
+  <!-- Consciousness → Soul -->
+  <line x1="160" y1="170" x2="250" y2="200" stroke="#22d3ee" stroke-width="1" stroke-dasharray="4,4"/>
+  <!-- Learning → Soul -->
+  <line x1="620" y1="170" x2="450" y2="200" stroke="#34d399" stroke-width="1" stroke-dasharray="4,4"/>
+
+  <!-- ===== CONNECTION (Middle) ===== -->
+  <line x1="500" y1="310" x2="500" y2="370" stroke="#22d3ee" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#arrow)"/>
+  <line x1="500" y1="370" x2="500" y2="310" stroke="#34d399" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#arrow-emerald)"/>
+  <rect x="430" y="325" width="140" height="30" rx="4" fill="#0f172a" stroke="#1e293b" stroke-width="1"/>
+  <text x="500" y="345" fill="#94a3b8" font-size="10" font-weight="600" text-anchor="middle">↕ HTTP API</text>
+
+  <!-- ===== HERMES BODY (Bottom) ===== -->
+  <!-- Body Region -->
+  <rect x="30" y="370" width="940" height="220" rx="12" fill="none" stroke="#34d399" stroke-width="2" stroke-dasharray="8,4"/>
+  <text x="50" y="395" fill="#34d399" font-size="14" font-weight="700">💪 HERMES BODY (VPS)</text>
+  <text x="50" y="412" fill="#94a3b8" font-size="10">root@vps | /root/.hermes/</text>
+
+  <!-- Auto-Sync -->
+  <rect x="60" y="430" width="200" height="70" rx="6" fill="rgba(6, 78, 59, 0.4)" stroke="#34d399" stroke-width="1.5"/>
+  <rect x="60" y="430" width="200" height="70" rx="6" fill="#0f172a" opacity="0.5"/>
+  <rect x="60" y="430" width="200" height="70" rx="6" fill="rgba(6, 78, 59, 0.4)" stroke="#34d399" stroke-width="1.5"/>
+  <text x="160" y="455" fill="#34d399" font-size="11" font-weight="600" text-anchor="middle">📥 AUTO-SYNC</text>
+  <text x="160" y="472" fill="#94a3b8" font-size="9" text-anchor="middle">soul-sync.sh auto 300</text>
+  <text x="160" y="487" fill="#64748b" font-size="8" text-anchor="middle">Baca soul setiap 5 menit</text>
+
+  <!-- Auto-Report -->
+  <rect x="290" y="430" width="200" height="70" rx="6" fill="rgba(8, 51, 68, 0.4)" stroke="#22d3ee" stroke-width="1.5"/>
+  <rect x="290" y="430" width="200" height="70" rx="6" fill="#0f172a" opacity="0.5"/>
+  <rect x="290" y="430" width="200" height="70" rx="6" fill="rgba(8, 51, 68, 0.4)" stroke="#22d3ee" stroke-width="1.5"/>
+  <text x="390" y="455" fill="#22d3ee" font-size="11" font-weight="600" text-anchor="middle">📤 AUTO-REPORT</text>
+  <text x="390" y="472" fill="#94a3b8" font-size="9" text-anchor="middle">Report events → Brain</text>
+  <text x="390" y="487" fill="#64748b" font-size="8" text-anchor="middle">Success/Error/Learned</text>
+
+  <!-- Terminal -->
+  <rect x="520" y="430" width="200" height="70" rx="6" fill="rgba(76, 29, 149, 0.4)" stroke="#a78bfa" stroke-width="1.5"/>
+  <rect x="520" y="430" width="200" height="70" rx="6" fill="#0f172a" opacity="0.5"/>
+  <rect x="520" y="430" width="200" height="70" rx="6" fill="rgba(76, 29, 149, 0.4)" stroke="#a78bfa" stroke-width="1.5"/>
+  <text x="620" y="455" fill="#a78bfa" font-size="11" font-weight="600" text-anchor="middle">⚡ EXECUTOR</text>
+  <text x="620" y="472" fill="#94a3b8" font-size="9" text-anchor="middle">Terminal • Files • Tools</text>
+  <text x="620" y="487" fill="#64748b" font-size="8" text-anchor="middle">Execute commands di VPS</text>
+
+  <!-- Local Cache -->
+  <rect x="750" y="430" width="200" height="70" rx="6" fill="rgba(251, 146, 60, 0.3)" stroke="#fb923c" stroke-width="1.5"/>
+  <rect x="750" y="430" width="200" height="70" rx="6" fill="#0f172a" opacity="0.5"/>
+  <rect x="750" y="430" width="200" height="70" rx="6" fill="rgba(251, 146, 60, 0.3)" stroke="#fb923c" stroke-width="1.5"/>
+  <text x="850" y="455" fill="#fb923c" font-size="11" font-weight="600" text-anchor="middle">💾 LOCAL CACHE</text>
+  <text x="850" y="472" fill="#94a3b8" font-size="9" text-anchor="middle">~/.hermes/soul.json</text>
+  <text x="850" y="487" fill="#64748b" font-size="8" text-anchor="middle">Offline fallback</text>
+
+  <!-- Systemd -->
+  <rect x="300" y="520" width="400" height="50" rx="6" fill="rgba(30, 41, 59, 0.5)" stroke="#94a3b8" stroke-width="1.5"/>
+  <rect x="300" y="520" width="400" height="50" rx="6" fill="#0f172a" opacity="0.5"/>
+  <rect x="300" y="520" width="400" height="50" rx="6" fill="rgba(30, 41, 59, 0.5)" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="500" y="543" fill="#94a3b8" font-size="10" font-weight="600" text-anchor="middle">⚙️ SYSTEMD SERVICE</text>
+  <text x="500" y="558" fill="#64748b" font-size="9" text-anchor="middle">soul-sync.service | Auto-restart | Auto-start on boot</text>
+
+  <!-- Internal arrows body -->
+  <line x1="260" y1="465" x2="290" y2="465" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="490" y1="465" x2="520" y2="465" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#arrow-emerald)"/>
+  <line x1="720" y1="465" x2="750" y2="465" stroke="#a78bfa" stroke-width="1.5" marker-end="url(#arrow-amber)"/>
+  <line x1="500" y1="500" x2="500" y2="520" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,3"/>
+
+</svg>
+</div>
+
+<div class="cards">
+  <div class="card">
+    <div class="card-header">
+      <div class="card-dot cyan"></div>
+      <h3>Consciousness</h3>
+    </div>
+    <ul>
+      <li>• Cron Trigger: setiap 30 menit</li>
+      <li>• Analisa events terakhir</li>
+      <li>• Deteksi high-confidence patterns</li>
+      <li>• Update soul memory</li>
+      <li>• Kirim notifikasi Telegram</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-dot violet"></div>
+      <h3>Memory System</h3>
+    </div>
+    <ul>
+      <li>• <strong>Soul:</strong> Identity, Preferences, Behavior</li>
+      <li>• <strong>Events:</strong> Log semua experience</li>
+      <li>• <strong>Patterns:</strong> Learned behaviors</li>
+      <li>• <strong>Insights:</strong> High-confidence learnings</li>
+      <li>• Version auto-increment</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-dot emerald"></div>
+      <h3>Learning Loop</h3>
+    </div>
+    <ul>
+      <li>1. Execute task → Success/Gagal</li>
+      <li>2. Report event ke Brain</li>
+      <li>3. Pattern recognition</li>
+      <li>4. Confidence: 0.5 → 0.99</li>
+      <li>5. Soul evolve → Apply</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-dot amber"></div>
+      <h3>Hermes Body</h3>
+    </div>
+    <ul>
+      <li>• Auto-sync soul setiap 5 menit</li>
+      <li>• Auto-report setelah task</li>
+      <li>• Systemd service (auto-start)</li>
+      <li>• Local cache (offline fallback)</li>
+      <li>• curl-based (no virus flag)</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-dot rose"></div>
+      <h3>Growth Cycle</h3>
+    </div>
+    <ul>
+      <li>• Minggu 1: Error → Store → Memory</li>
+      <li>• Minggu 2: Pattern detected</li>
+      <li>• Minggu 3: New behavior learned</li>
+      <li>• Minggu 4: Auto-apply on new VPS</li>
+      <li>• ∞: Continuously evolving</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-dot cyan"></div>
+      <h3>API Endpoints</h3>
+    </div>
+    <ul>
+      <li>• <code>GET /soul</code> — Public (no auth)</li>
+      <li>• <code>GET /brain/status</code> — Public</li>
+      <li>• <code>POST /brain/event</code> — Public</li>
+      <li>• <code>GET /brain/patterns</code> — Public</li>
+      <li>• <code>POST /brain/think</code> — Public</li>
+    </ul>
+  </div>
+</div>
+
+<div class="footer">
+  <p>Alice Brain v1.0 | Cloudflare Workers + D1 + Cron | 2026-05-16</p>
+</div>
+
+</body>
+</html>
