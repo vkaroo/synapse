@@ -53,6 +53,8 @@
 
 ## 🏗️ Architecture
 
+![Alice Brain Architecture](diagrams/alice-brain-diagram.png)
+
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                    CLOUDFLARE EDGE                          │
