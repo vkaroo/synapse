@@ -1,15 +1,18 @@
 # Dependencies
 node_modules/
-
-# Wrangler
 .wrangler/
-.dev.vars
+
+# Environment
+.env
+.env.local
+.env.*.local
 
 # IDE
 .vscode/
 .idea/
 *.swp
 *.swo
+*~
 
 # OS
 .DS_Store
@@ -17,21 +20,17 @@ Thumbs.db
 
 # Logs
 *.log
-npm-debug.log*
-
-# Environment
-.env
-.env.local
-.env.*.local
+logs/
 
 # Build
 dist/
 build/
 
-# Cache
-.cache/
-*.cache
+# Wrangler
+.wrangler/
+.dev.vars
 
-# Temporary
-tmp/
-temp/
+# Secrets
+*.pem
+*.key
+secrets/

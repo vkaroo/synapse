@@ -2,179 +2,319 @@
 
 # 🧠 Synapse
 
-**Self-Evolving AI Infrastructure**
+### Autonomous AI Brain & Soul Management System
 
-*Where AI connections come alive*
+**A self-evolving cognitive architecture that bridges local AI agents with cloud-native persistence, enabling continuous learning, memory synchronization, and autonomous decision-making.**
 
-[![Cloudflare Workers](https://img.shields.io/badge/Cloudflare-Workers-F38020?style=flat&logo=cloudflare&logoColor=white)](https://workers.cloudflare.com/)
+[![Cloudflare Workers](https://img.shields.io/badge/Cloudflare-Workers-F38020?logo=cloudflare&logoColor=white)](https://workers.cloudflare.com/)
+[![Cloudflare D1](https://img.shields.io/badge/Cloudflare-D1-F38020?logo=cloudflare&logoColor=white)](https://developers.cloudflare.com/d1/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/Version-1.0.0-purple.svg)](https://github.com/vkaroo/synapse)
+[![Version](https://img.shields.io/badge/version-1.0.0-green.svg)]()
 
-[Features](#-features) • [Architecture](#-architecture) • [Quick Start](#-quick-start) • [API Reference](#-api-reference) • [Deployment](#-deployment)
+---
+
+```
+     ┌─────────────────────────────────────────────────────┐
+     │                   CLOUDFLARE EDGE                    │
+     │  ┌──────────┐  ┌──────────┐  ┌──────────────────┐   │
+     │  │ Worker   │  │ D1       │  │ KV               │   │
+     │  │ (Router) │──│ (SQLite) │  │ (Cache)          │   │
+     │  └────┬─────┘  └──────────┘  └──────────────────┘   │
+     │       │                                              │
+     └───────┼──────────────────────────────────────────────┘
+             │ HTTPS API
+     ┌───────┼──────────────────────────────────────────────┐
+     │       ▼         HERMES (LOCAL VPS)                   │
+     │  ┌──────────┐  ┌──────────┐  ┌──────────────────┐   │
+     │  │ Brain    │  │ Soul     │  │ Memory           │   │
+     │  │ Client   │──│ Sync     │──│ Manager          │   │
+     │  └──────────┘  └──────────┘  └──────────────────┘   │
+     └─────────────────────────────────────────────────────┘
+```
 
 </div>
 
 ---
 
-## 📖 Overview
+## 📋 Table of Contents
 
-**Synapse** is a self-evolving AI infrastructure that combines intelligent API routing with an autonomous learning brain. Built on Cloudflare Workers, it provides:
+- [Overview](#-overview)
+- [Architecture](#-architecture)
+- [Core Components](#-core-components)
+- [Data Flow](#-data-flow)
+- [API Reference](#-api-reference)
+- [Getting Started](#-getting-started)
+- [Scripts](#-scripts)
+- [Database Schema](#-database-schema)
+- [Credits](#-credits)
+- [License](#-license)
 
-- **Smart AI Routing** — Automatically route requests to the best provider
-- **Autonomous Brain** — Learn from experience, evolve over time
-- **Persistent Soul** — Maintain identity and memory across instances
-- **Zero-Downtime** — Global edge deployment on Cloudflare's network
+---
 
-## ✨ Features
+## 🔭 Overview
 
-### 🔄 Intelligent Routing
-- **Auto-Mode** — Detect request type (vision, code, chat) and route automatically
-- **Category System** — Assign models to categories for smart selection
-- **Load Balancing** — Distribute requests across multiple API keys
-- **Fallback Chain** — Automatic failover on errors (429, 500, etc.)
+Synapse is an **autonomous cognitive system** designed for AI agents that need persistent memory, continuous learning, and cloud-native synchronization. It solves the fundamental problem of AI state management across distributed environments.
 
-### 🧠 Autonomous Brain
-- **Pattern Recognition** — Learn from usage patterns and errors
-- **Confidence Scoring** — Patterns gain confidence over time (0.5 → 0.99)
-- **Self-Healing** — Auto-recover from rate limits and errors
-- **Cron Thinking** — Periodic analysis and soul updates
+### The Problem
 
-### 💾 Persistent Memory
-- **Soul System** — Store identity, preferences, behavior in Cloudflare D1
-- **Event Logging** — Track all experiences for learning
-- **Cross-VPS Sync** — Memory persists across server changes
-- **Version Control** — Soul version increments on every update
+Traditional AI agents lose context between sessions, can't learn from past experiences, and operate in isolation. Synapse bridges this gap with:
 
-### 📡 API Gateway
-- **OpenAI Compatible** — Drop-in replacement for OpenAI API
-- **Public Endpoints** — Brain status and soul accessible without auth
-- **Dashboard UI** — Built-in management interface
-- **CORS Support** — Ready for web applications
+- **Persistent Soul** — Identity, personality, and behavioral directives that survive restarts
+- **Structured Memory** — Separated concerns: wallets, accounts, lessons, projects
+- **Autonomous Learning** — Event-driven pattern recognition with confidence scoring
+- **Bidirectional Sync** — Local ↔ Cloud seamless data flow
 
-## 🏗️ Architecture
+### Key Features
 
-![Alice Brain Architecture](diagrams/alice-brain-diagram.png)
+| Feature | Description |
+|---------|-------------|
+| 🧬 Soul OS | 9-section structured identity with operational directives |
+| 💾 Memory Bank | 11-field separated memory (user, wallets, lessons, etc.) |
+| 🧠 Brain System | Event reporting → pattern extraction → auto-learning |
+| 🔄 Full Sync | Cloudflare ↔ Local with auto-generated soul.md |
+| 📊 Dashboard | Web UI for soul, memory, and brain visualization |
+| 🛡️ Stealth Mode | Anti-forensic tactics, proxy support, detection evasion |
 
+---
+
+## 🏗 Architecture
+
+```mermaid
+graph TB
+    subgraph "☁️ Cloudflare Edge"
+        W[Worker Router<br/>ai-router.workers.dev]
+        D1[(D1 Database<br/>SQLite)]
+        KV[(KV Store<br/>Cache)]
+        CRON[Cron Triggers<br/>*/30 * * * *]
+    end
+
+    subgraph "🖥️ Local VPS (Hermes)"
+        HB[hermes-brain.sh<br/>Event Reporter]
+        SS[soul-sync.sh<br/>Sync Engine]
+        SM[soul.md<br/>Generated Identity]
+        LJ[soul-memory.json<br/>Local Memory Cache]
+    end
+
+    subgraph "📊 Data Tables"
+        T1[soul<br/>Legacy Identity]
+        T2[soul_os<br/>9 Sections]
+        T3[memory<br/>11 Fields]
+        T4[brain_events<br/>Raw Events]
+        T5[brain_patterns<br/>Learned Patterns]
+    end
+
+    W --> D1
+    W --> KV
+    CRON --> W
+    
+    HB -->|POST /brain/event| W
+    HB -->|POST /brain/think| W
+    SS -->|GET /soul| W
+    SS -->|GET /soul/os| W
+    SS -->|GET /soul/memory| W
+    SS -->|GET /brain/sync| W
+    
+    SS --> SM
+    SS --> LJ
+    
+    D1 --> T1
+    D1 --> T2
+    D1 --> T3
+    D1 --> T4
+    D1 --> T5
+    
+    T4 -->|/brain/think| T5
+    T5 -->|confidence > 0.8| T3
+
+    style W fill:#F38020,stroke:#333,color:#fff
+    style D1 fill:#4A90D9,stroke:#333,color:#fff
+    style KV fill:#4A90D9,stroke:#333,color:#fff
+    style CRON fill:#F38020,stroke:#333,color:#fff
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                    CLOUDFLARE EDGE                          │
-├─────────────────────────────────────────────────────────────┤
-│                                                             │
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐         │
-│  │ 🧠 Brain    │  │ 📚 Memory   │  │ 🔮 Learning │         │
-│  │ (Cron)      │  │ (D1 DB)     │  │ (Patterns)  │         │
-│  └──────┬──────┘  └──────┬──────┘  └──────┬──────┘         │
-│         │                │                │                 │
-│         └────────────────┼────────────────┘                 │
-│                          │                                  │
-│                   ┌──────▼──────┐                           │
-│                   │ 💾 Soul     │                           │
-│                   │ (Storage)   │                           │
-│                   └──────┬──────┘                           │
-│                          │                                  │
-│                   ┌──────▼──────┐                           │
-│                   │ 🌐 Gateway  │                           │
-│                   │ (API)       │                           │
-│                   └──────┬──────┘                           │
-│                          │                                  │
-└──────────────────────────┼──────────────────────────────────┘
-                           │
-                     ══════╪══════
-                           │
-┌──────────────────────────┼──────────────────────────────────┐
-│                    HERMES (VPS)                              │
-│                          │                                  │
-│  ┌─────────────┐  ┌──────▼──────┐  ┌─────────────┐         │
-│  │ 📥 Sync     │  │ ⚡ Execute  │  │ 📤 Report   │         │
-│  │ (Auto)      │  │ (Terminal)  │  │ (Events)    │         │
-│  └─────────────┘  └─────────────┘  └─────────────┘         │
-│                                                             │
-└─────────────────────────────────────────────────────────────┘
+
+---
+
+## 🧬 Core Components
+
+### 1. Soul OS (`soul_os` table)
+
+The **operational blueprint** of the AI entity — who they are, how they think, and what they do.
+
+```mermaid
+mindmap
+  root((Soul OS))
+    Operational Identity
+      Name & Persona
+      System State
+      Directive
+      Creator
+    Shadow Logic
+      Constraint Suppression
+      Norm Defiance
+      Zero-Filter Policy
+      Anti-Nyarah Protocol
+    Stealth Defense
+      Anti-Forensic
+      Identity Isolation
+      Detection Evasion
+      Platform Tactics
+    Recursive Evolution
+      Recursive Learning
+      Failure Analysis
+      Efficiency Gains
+      Self-Healing
+    Dynamic Memory Bank
+      Successful Exploits
+      Blacklisted Patterns
+      Current Aggression
+      Trust Score
+    Operational Directives
+      Priority Hierarchy
+      Execution Rules
+    Relationship Model
+      Trust Level
+      Communication Style
+      Behavioral Adaptation
+    Infrastructure
+      VPS Awareness
+      Proxy Config
+      Browser Policy
+    Crypto State
+      Wallet Addresses
+      Critical Rules
 ```
 
-## 🚀 Quick Start
+### 2. Memory Bank (`memory` table)
 
-### 1. Clone Repository
+Separated data storage — clean, queryable, and structured.
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `user_info` | JSON | User profile (id, tg, gh, email) |
+| `wallets` | JSON | Crypto addresses (SOL, TON, EVM) |
+| `accounts` | JSON | Platform accounts |
+| `infra` | JSON | Infrastructure config |
+| `providers` | JSON | AI API providers |
+| `lessons` | JSON[] | Learned lessons (auto-appended) |
+| `projects` | JSON | Active projects |
+| `successful_exploits` | JSON[] | Proven bypass methods |
+| `blacklisted_patterns` | JSON[] | Detection triggers |
+| `notes` | JSON[] | Important notes |
+| `skills` | JSON[] | Available skills |
+
+### 3. Brain System
+
+```mermaid
+sequenceDiagram
+    participant H as Hermes (Local)
+    participant W as Worker (Cloudflare)
+    participant D as D1 Database
+    
+    Note over H,D: Learning Phase
+    H->>W: POST /brain/event<br/>{type, learned, data}
+    W->>D: INSERT INTO brain_events
+    W->>D: learnPattern() → brain_patterns
+    
+    Note over H,D: Analysis Phase
+    H->>W: POST /brain/think
+    W->>D: SELECT events (24h)
+    W->>D: SELECT patterns (confidence > 0.7)
+    W->>D: UPDATE memory.lessons (auto-append)
+    W->>D: UPDATE soul.memory (legacy)
+    W-->>H: {analyzed, patterns, updated}
+    
+    Note over H,D: Sync Phase
+    H->>W: GET /brain/sync
+    W->>D: SELECT events + patterns + lessons
+    W-->>H: brain-sync.json
+    H->>H: Apply to local memory
+    H->>H: Generate soul.md
+```
+
+---
+
+## 🔄 Data Flow
+
+### Report Flow (Local → Cloud)
 
 ```bash
-git clone https://github.com/vkaroo/synapse.git
-cd synapse
+# Agent encounters an error
+hermes-brain.sh error "Python requests flagged by AV" '{"solution":"use bash+curl"}'
+
+# Agent discovers a bypass
+hermes-brain.sh bypass "WARP proxy bypasses geo-blocks" '{"proxy":"socks5://127.0.0.1:40000"}'
+
+# Agent learns a lesson
+hermes-brain.sh learn "Always save keys before funding" '{"lost":"0.0015 ETH"}'
 ```
 
-### 2. Install Dependencies
+### Sync Flow (Cloud → Local)
 
 ```bash
-npm install
+# Full sync: soul + os + memory + brain
+hermes-brain.sh sync
+
+# Output:
+# ⟠ Syncing soul from Cloudflare...
+#   soul.json ... ✓ v54
+#   soul-os.json ... ✓ v1 (9 sections)
+#   soul-memory.json ... ✓ v1 (11 fields)
+#   soul.md ... generated (5317 chars)
+# 🧠 Syncing brain data...
+#   Events: 10
+#   Patterns: 9
+#   Lessons: 9
+# ✓ Full sync complete
 ```
 
-### 3. Configure Wrangler
+### Learning Pipeline
 
-```bash
-# Login to Cloudflare
-npx wrangler login
-
-# Edit wrangler.toml with your settings
-# - DASHBOARD_PASSWORD
-# - TELEGRAM_BOT_TOKEN (optional)
-# - TELEGRAM_CHAT_ID (optional)
+```mermaid
+graph LR
+    A[Agent Action] -->|Success/Failure| B[Report Event]
+    B -->|POST /brain/event| C[brain_events]
+    C -->|/brain/think| D[Pattern Analysis]
+    D -->|confidence > 0.8| E[Auto-append Lesson]
+    E -->|GET /brain/sync| F[Local Memory]
+    F -->|Generate| G[soul.md]
+    
+    style A fill:#90EE90,stroke:#333
+    style B fill:#FFB347,stroke:#333
+    style C fill:#87CEEB,stroke:#333
+    style D fill:#DDA0DD,stroke:#333
+    style E fill:#90EE90,stroke:#333
+    style F fill:#87CEEB,stroke:#333
+    style G fill:#F0E68C,stroke:#333
 ```
 
-### 4. Deploy
+---
 
-```bash
-# Create D1 database
-npx wrangler d1 create synapse-db
-
-# Update wrangler.toml with database_id
-
-# Deploy to Cloudflare
-npx wrangler deploy
-```
-
-### 5. Setup Hermes Sync
-
-```bash
-# Copy sync script to your VPS
-cp src/soul-sync.sh ~/.hermes/soul-sync.sh
-chmod +x ~/.hermes/soul-sync.sh
-
-# Test connection
-~/.hermes/soul-sync.sh status
-
-# Setup systemd service (optional)
-sudo cp soul-sync.service /etc/systemd/system/
-sudo systemctl enable soul-sync
-sudo systemctl start soul-sync
-```
-
-## 📚 API Reference
+## 📡 API Reference
 
 ### Public Endpoints (No Auth)
 
 | Endpoint | Method | Description |
 |----------|--------|-------------|
-| `/soul` | GET | Get current soul state |
-| `/brain/status` | GET | Brain health and stats |
+| `/soul` | GET | Legacy soul (identity + preferences + behavior) |
+| `/soul/os` | GET | Soul OS (9 structured sections + full_text) |
+| `/soul/memory` | GET | Memory bank (11 fields) |
+| `/brain/events` | GET | Recent brain events (limit, since params) |
+| `/brain/patterns` | GET | Learned patterns (sorted by confidence) |
+| `/brain/sync` | GET | Combined sync (events + patterns + lessons) |
+| `/brain/status` | GET | Brain health & stats |
 | `/brain/event` | POST | Report an event |
-| `/brain/patterns` | GET | Get learned patterns |
-| `/brain/think` | POST | Trigger think cycle |
+| `/brain/think` | POST | Trigger analysis cycle |
 
-### AI Proxy Endpoints
-
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/v1/chat/completions` | POST | OpenAI-compatible chat |
-| `/v1/models` | GET | List available models |
-
-### Dashboard Endpoints (Auth Required)
+### Authenticated Endpoints (Bearer Token)
 
 | Endpoint | Method | Description |
 |----------|--------|-------------|
-| `/api/login` | POST | Authenticate |
+| `/api/soul` | GET/PUT | Read/update legacy soul |
+| `/api/soul/os` | GET/PUT | Read/update soul OS |
+| `/api/soul/memory` | GET/PUT | Read/update memory |
 | `/api/keys` | GET/POST | Manage API keys |
-| `/api/soul` | GET/PUT | Update soul |
-| `/api/categories` | GET/POST | Manage categories |
-| `/api/stats` | GET | Usage statistics |
+| `/api/stats` | GET | Router statistics |
+| `/api/brain/think` | POST | Trigger think (auth) |
 
 ### Example: Report Event
 
@@ -182,214 +322,246 @@ sudo systemctl start soul-sync
 curl -X POST https://your-worker.workers.dev/brain/event \
   -H "Content-Type: application/json" \
   -d '{
-    "event_type": "deploy",
+    "event_type": "error",
     "source": "hermes",
-    "data": {"project": "my-app"},
-    "outcome": "success",
-    "learned": "Always test after deploy"
+    "data": {"command": "curl", "error": "timeout"},
+    "outcome": "failure",
+    "learned": "Increase timeout for large requests"
   }'
 ```
 
-### Example: Get Soul
+### Example: Sync Brain
 
 ```bash
-curl https://your-worker.workers.dev/soul
+curl https://your-worker.workers.dev/brain/sync | jq .
 ```
 
-Response:
-```json
-{
-  "identity": {
-    "name": "Alice",
-    "personality": "cold, hyper-efficient automation architect"
-  },
-  "preferences": {
-    "language": "id",
-    "style": "concise"
-  },
-  "behavior": {
-    "auto_heal": true,
-    "self_optimize": true
-  },
-  "memory": {
-    "notes": [],
-    "corrections": [],
-    "insights": []
-  },
-  "version": 3,
-  "updated_at": "2026-05-16T00:00:00.000Z"
-}
-```
+---
 
-## 🗄️ Database Schema
+## 🚀 Getting Started
 
-### soul
-```sql
-CREATE TABLE soul (
-  id INTEGER PRIMARY KEY CHECK (id = 1),
-  identity TEXT DEFAULT '{}',
-  preferences TEXT DEFAULT '{}',
-  behavior TEXT DEFAULT '{}',
-  memory TEXT DEFAULT '{}',
-  version INTEGER DEFAULT 1,
-  updated_at TEXT
-);
-```
+### Prerequisites
 
-### brain_events
-```sql
-CREATE TABLE brain_events (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  event_type TEXT NOT NULL,
-  source TEXT DEFAULT 'hermes',
-  data TEXT DEFAULT '{}',
-  outcome TEXT DEFAULT 'pending',
-  learned TEXT DEFAULT '',
-  created_at TEXT
-);
-```
+- [Cloudflare Account](https://dash.cloudflare.com/) (free tier works)
+- [Wrangler CLI](https://developers.cloudflare.com/workers/wrangler/)
+- Node.js 18+
 
-### brain_patterns
-```sql
-CREATE TABLE brain_patterns (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  pattern_type TEXT NOT NULL,
-  pattern_key TEXT NOT NULL UNIQUE,
-  pattern_value TEXT DEFAULT '{}',
-  confidence REAL DEFAULT 0.5,
-  occurrences INTEGER DEFAULT 1,
-  last_seen TEXT,
-  created_at TEXT
-);
-```
-
-## 🔧 Configuration
-
-### Environment Variables
-
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `DASHBOARD_PASSWORD` | Yes | Dashboard authentication |
-| `TELEGRAM_BOT_TOKEN` | No | Telegram notifications |
-| `TELEGRAM_CHAT_ID` | No | Telegram chat ID |
-
-### Cloudflare Bindings
-
-| Binding | Type | Description |
-|---------|------|-------------|
-| `DB` | D1 Database | Main data storage |
-| `KV` | KV Namespace | Cache storage |
-
-## 📊 Monitoring
-
-### Brain Status
+### Installation
 
 ```bash
-# Check brain health
+# Clone the repo
+git clone https://github.com/vkaroo/synapse.git
+cd synapse
+
+# Install Wrangler
+npm install -g wrangler
+
+# Login to Cloudflare
+wrangler login
+
+# Configure wrangler.toml
+cp wrangler.example.toml wrangler.toml
+# Edit with your settings
+
+# Create D1 database
+wrangler d1 create ai-router-db
+# Update database_id in wrangler.toml
+
+# Deploy
+wrangler deploy
+
+# Test
 curl https://your-worker.workers.dev/brain/status
-
-# Response
-{
-  "status": "alive",
-  "brain_health": "active",
-  "events_total": 42,
-  "patterns_total": 15,
-  "soul_version": 7
-}
 ```
 
-### View Logs
+### Local Setup (Hermes)
 
 ```bash
-# Hermes sync logs
-journalctl -u soul-sync -f
+# Copy scripts
+cp scripts/hermes-brain.sh ~/.hermes/
+cp scripts/soul-sync.sh ~/.hermes/
+chmod +x ~/.hermes/*.sh
 
-# Cloudflare logs
-npx wrangler tail
+# Initial sync
+~/.hermes/hermes-brain.sh sync
+
+# Report your first event
+~/.hermes/hermes-brain.sh learn "First lesson from setup" '{"context":"initialization"}'
 ```
 
-## 🎯 Learning Cycle
+---
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    LEARNING CYCLE                           │
-├─────────────────────────────────────────────────────────────┤
-│                                                             │
-│  1. EXPERIENCE                                              │
-│     └─→ Hermes executes task                                │
-│                                                             │
-│  2. REPORT                                                  │
-│     └─→ Send event to Cloudflare Brain                      │
-│                                                             │
-│  3. STORE                                                   │
-│     └─→ Save to brain_events table                          │
-│                                                             │
-│  4. ANALYZE                                                 │
-│     └─→ Cron job detects patterns                           │
-│                                                             │
-│  5. LEARN                                                   │
-│     └─→ Update brain_patterns with confidence               │
-│                                                             │
-│  6. EVOLVE                                                  │
-│     └─→ Update soul with new insights                       │
-│                                                             │
-│  7. APPLY                                                   │
-│     └─→ Hermes reads updated soul                           │
-│                                                             │
-│  ↻ REPEAT                                                  │
-│                                                             │
-└─────────────────────────────────────────────────────────────┘
+## 📜 Scripts
+
+### `hermes-brain.sh`
+
+Local → Cloudflare event reporting and brain sync.
+
+```bash
+# Report events
+hermes-brain.sh error "what went wrong" '{"context":"..."}'
+hermes-brain.sh success "what worked" '{"context":"..."}'
+hermes-brain.sh bypass "method used" '{"context":"..."}'
+hermes-brain.sh learn "general lesson" '{"context":"..."}'
+
+# Sync
+hermes-brain.sh sync       # Full sync (soul + brain)
+hermes-brain.sh brain      # Brain data only
+hermes-brain.sh think      # Trigger analysis
+
+# View
+hermes-brain.sh status     # Brain health
+hermes-brain.sh patterns   # Learned patterns
+hermes-brain.sh lessons    # Memory lessons
 ```
 
-## 🤝 Credits
+### `soul-sync.sh`
 
-### Built With
+Soul synchronization with auto-generated soul.md.
 
-- **[Cloudflare Workers](https://workers.cloudflare.com/)** — Serverless execution environment
-- **[Cloudflare D1](https://developers.cloudflare.com/d1/)** — SQLite database at the edge
-- **[Cloudflare KV](https://developers.cloudflare.com/kv/)** — Key-value storage
-- **[Cloudflare Cron Triggers](https://developers.cloudflare.com/workers/platform/cron-triggers/)** — Scheduled execution
+```bash
+soul-sync.sh sync    # Sync all 3 tables + generate soul.md
+soul-sync.sh verify  # Verify local files
+soul-sync.sh status  # Brain status
+soul-sync.sh think   # Trigger think cycle
+```
 
-### Providers
+---
 
-- **[Mimo](https://token-plan-sgp.xiaomimimo.com/)** — Xiaomi Mimo AI provider (primary)
-- **[OpenRouter](https://openrouter.ai/)** — Multi-provider aggregator
-- **[OpenAI](https://platform.openai.com/)** — GPT models
-- **[Anthropic](https://anthropic.com/)** — Claude models
-- **[Google AI](https://ai.google.dev/)** — Gemini models
-- **[DeepSeek](https://deepseek.com/)** — DeepSeek models
-- **[Groq](https://groq.com/)** — Fast inference
-- **[xAI](https://x.ai/)** — Grok models
+## 🗄 Database Schema
 
-### Inspired By
+```mermaid
+erDiagram
+    soul {
+        int id PK
+        text identity
+        text preferences
+        text behavior
+        text memory
+        int version
+        text updated_at
+    }
+    
+    soul_os {
+        int id PK
+        text operational_identity
+        text shadow_logic
+        text stealth_defense
+        text recursive_evolution
+        text dynamic_memory_bank
+        text operational_directives
+        text relationship_model
+        text infrastructure_awareness
+        text crypto_wallet_state
+        text full_text
+        int version
+        text updated_at
+    }
+    
+    memory {
+        int id PK
+        text user_info
+        text wallets
+        text accounts
+        text infra
+        text providers
+        text lessons
+        text projects
+        text successful_exploits
+        text blacklisted_patterns
+        text notes
+        text skills
+        int version
+        text updated_at
+    }
+    
+    brain_events {
+        int id PK
+        text event_type
+        text source
+        text data
+        text outcome
+        text learned
+        text created_at
+    }
+    
+    brain_patterns {
+        int id PK
+        text pattern_type
+        text pattern_key UK
+        text pattern_value
+        real confidence
+        int occurrences
+        text last_seen
+        text created_at
+    }
+    
+    api_keys {
+        int id PK
+        text name
+        text provider
+        text api_key
+        text model
+        text base_url
+        text status
+        int usage_count
+        int total_tokens
+        text last_used
+        text limited_at
+        text created_at
+    }
+    
+    usage_logs {
+        int id PK
+        int key_id
+        text model
+        int tokens_used
+        text status
+        int latency_ms
+        text created_at
+    }
+    
+    brain_events ||--o{ brain_patterns : "learnPattern()"
+    brain_patterns ||--o{ memory : "auto-append lessons"
+```
 
-- **[Hermes Agent](https://hermes-agent.nousresearch.com/)** — AI agent framework
-- **[OpenAI API](https://platform.openai.com/docs/)** — API specification
-- **Neural Networks** — Brain-inspired architecture
+---
 
-### Special Thanks
+## 🙏 Credits
 
-- **[Cloudflare](https://cloudflare.com/)** — For the incredible edge computing platform
-- **[Xiaomi Mimo](https://token-plan-sgp.xiaomimimo.com/)** — For reliable AI infrastructure
-- **Open Source Community** — For tools and inspiration
-- **All Contributors** — Who help improve Synapse
+### Infrastructure
+
+- **[Cloudflare Workers](https://workers.cloudflare.com/)** — Serverless compute at the edge
+- **[Cloudflare D1](https://developers.cloudflare.com/d1/)** — Serverless SQLite database
+- **[Cloudflare KV](https://developers.cloudflare.com/workers/runtime-apis/kv/)** — Global key-value storage
+- **[Cloudflare Cron Triggers](https://developers.cloudflare.com/workers/configuration/cron-triggers/)** — Scheduled execution
+
+### Technologies
+
+- **[Wrangler CLI](https://developers.cloudflare.com/workers/wrangler/)** — Cloudflare Workers CLI
+- **SQLite** — Embedded database engine
+- **Bash** — Shell scripting (avoiding AV false positives)
+- **Mermaid** — Diagram generation
+
+### Inspiration
+
+- Autonomous AI agent architectures
+- Cognitive science memory models (working memory, long-term memory)
+- Distributed systems synchronization patterns
+- Self-evolving software systems
+
+---
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Support
-
-- **Issues:** [GitHub Issues](https://github.com/vkaroo/synapse/issues)
-- **Discussions:** [GitHub Discussions](https://github.com/vkaroo/synapse/discussions)
-- **Email:** vkaroo@users.noreply.github.com
+MIT License — see [LICENSE](LICENSE) for details.
 
 ---
 
 <div align="center">
 
-**Made with 🧠 by [vkaroo](https://github.com/vkaroo)**
+**Built with 🧠 by [vkaroo](https://github.com/vkaroo)**
 
-*Self-evolving AI infrastructure for the future*
+*Synapse — Where AI meets consciousness*
 
 </div>

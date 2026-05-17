@@ -1,124 +1,56 @@
 # Contributing to Synapse
 
-Thank you for your interest in contributing to Synapse! 🧠
+Thank you for your interest in contributing to Synapse! This document provides guidelines for contributing.
 
-## How to Contribute
+## Getting Started
 
-### 1. Fork & Clone
-
-```bash
-git clone https://github.com/YOUR_USERNAME/synapse.git
-cd synapse
-```
-
-### 2. Create Branch
-
-```bash
-git checkout -b feature/amazing-feature
-```
-
-### 3. Make Changes
-
-- Follow the existing code style
-- Add comments for complex logic
-- Test your changes locally
-
-### 4. Commit
-
-```bash
-git commit -m "feat: add amazing feature"
-```
-
-Use conventional commits:
-- `feat:` — New feature
-- `fix:` — Bug fix
-- `docs:` — Documentation
-- `style:` — Formatting
-- `refactor:` — Code refactoring
-- `test:` — Tests
-- `chore:` — Maintenance
-
-### 5. Push & PR
-
-```bash
-git push origin feature/amazing-feature
-```
-
-Then open a Pull Request!
+1. Fork the repository
+2. Clone your fork
+3. Create a feature branch
+4. Make your changes
+5. Submit a pull request
 
 ## Development Setup
 
-### Prerequisites
-
-- Node.js 18+
-- Cloudflare account
-- Wrangler CLI
-
-### Local Development
-
 ```bash
-# Install dependencies
-npm install
+# Clone
+git clone https://github.com/your-username/synapse.git
+cd synapse
 
-# Run locally
-npx wrangler dev
+# Install Wrangler
+npm install -g wrangler
 
-# Test endpoints
-curl http://localhost:8787/brain/status
-```
+# Login
+wrangler login
 
-### Database Setup
-
-```bash
 # Create D1 database
-npx wrangler d1 create synapse-db
+wrangler d1 create ai-router-db
 
-# Run migrations (tables are auto-created on first request)
+# Update wrangler.toml with your database_id
+
+# Deploy
+wrangler deploy
 ```
 
-## Code Guidelines
+## Code Style
 
-### JavaScript
+- JavaScript: Use ESLint
+- Bash: Use ShellCheck
+- Follow existing patterns in the codebase
 
-- Use modern ES6+ syntax
-- Add JSDoc comments for functions
-- Handle errors gracefully
-- Keep functions focused and small
+## Pull Request Process
 
-### API Design
-
-- Follow OpenAI API specification
-- Use consistent naming (snake_case)
-- Return meaningful error messages
-- Include CORS headers
+1. Update README.md if needed
+2. Update CHANGELOG.md with your changes
+3. Ensure all tests pass
+4. Request review from maintainers
 
 ## Reporting Issues
 
-### Bug Reports
+- Use GitHub Issues
+- Include reproduction steps
+- Include error messages and logs
 
-Include:
-- Steps to reproduce
-- Expected behavior
-- Actual behavior
-- Environment details
+## License
 
-### Feature Requests
-
-Include:
-- Use case description
-- Proposed solution
-- Alternatives considered
-
-## Community
-
-- Be respectful and inclusive
-- Help others when possible
-- Share knowledge and ideas
-
-## Questions?
-
-Open an issue or reach out to the maintainers.
-
----
-
-**Thank you for contributing!** 🎉
+By contributing, you agree that your contributions will be licensed under the MIT License.

@@ -1,59 +1,55 @@
 # Changelog
 
-All notable changes to this project will be documented in this file.
+All notable changes to Synapse will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-
-## [1.0.0] - 2026-05-16
+## [1.0.0] - 2026-05-17
 
 ### Added
+- **Soul OS System** — 9-section structured soul with operational directives
+- **Memory Bank** — 11-field separated memory (user, wallets, accounts, etc.)
+- **Brain System** — Event-driven learning with pattern extraction
+- **Bidirectional Sync** — Local ↔ Cloudflare data flow
+- **Auto-learning** — High-confidence patterns auto-append to lessons
+- **hermes-brain.sh** — Local event reporter (error/success/bypass/learn)
+- **soul-sync.sh v2** — Full sync with auto-generated soul.md
+- **Dashboard UI** — Web interface for soul, memory, and brain visualization
+- **Public API** — /soul, /soul/os, /soul/memory, /brain/sync endpoints
+- **Cron Triggers** — 30-minute brain analysis cycles
 
-- **AI Router** — OpenAI-compatible API routing
-- **Brain System** — Autonomous learning with pattern recognition
-- **Soul Storage** — Persistent identity and memory in Cloudflare D1
-- **Auto-Sync** — Hermes VPS auto-sync with Cloudflare brain
-- **Cron Triggers** — Scheduled thinking every 30 minutes
-- **Pattern Learning** — Confidence-based pattern recognition
-- **Event Logging** — Track all experiences for learning
-- **Dashboard UI** — Built-in management interface
-- **Category System** — Smart model selection by category
-- **Fallback Chain** — Automatic failover on errors
+### Database Tables
+- `soul` — Legacy identity (backward compatible)
+- `soul_os` — 9-section structured soul
+- `memory` — 11-field separated memory
+- `brain_events` — Raw event log
+- `brain_patterns` — Learned patterns with confidence scoring
+- `api_keys` — API key management
+- `usage_logs` — Request logging
+- `combos` — Provider fallback chains
+- `custom_providers` — Custom API endpoints
 
-### Features
+### API Endpoints
+- `GET /soul` — Legacy soul
+- `GET /soul/os` — Soul OS (9 sections)
+- `GET /soul/memory` — Memory bank (11 fields)
+- `GET /brain/events` — Recent events
+- `GET /brain/patterns` — Learned patterns
+- `GET /brain/sync` — Combined brain sync
+- `GET /brain/status` — Brain health
+- `POST /brain/event` — Report event
+- `POST /brain/think` — Trigger analysis
+- `PUT /api/soul/os` — Update soul OS
+- `PUT /api/soul/memory` — Update memory
 
-- Auto-mode routing (vision, code, chat detection)
-- Load balancing across API keys
-- Rate limit handling (429, 500, etc.)
-- Telegram notifications (optional)
-- Cross-VPS soul persistence
-- Version-controlled soul updates
-
-### Infrastructure
-
-- Cloudflare Workers deployment
-- D1 database for persistent storage
-- KV namespace for caching
-- Cron triggers for scheduled tasks
-- Systemd service for VPS sync
-
-## [0.1.0] - 2026-05-15
-
-### Added
-
-- Initial project structure
-- Basic API routing
-- Soul storage system
+### Scripts
+- `hermes-brain.sh` — Local → Cloud event reporting
+- `soul-sync.sh` — Soul synchronization with auto-generated soul.md
 
 ---
 
-## Roadmap
+## [0.1.0] - 2026-05-13
 
-- [ ] OAuth authentication
-- [ ] Multi-provider model aggregation
-- [ ] Advanced analytics dashboard
-- [ ] WebSocket support
-- [ ] Rate limiting per user
-- [ ] API key rotation
-- [ ] Webhook notifications
-- [ ] GraphQL API
+### Added
+- Initial AI Router dashboard
+- Basic API key management
+- Usage logging
+- Provider fallback system

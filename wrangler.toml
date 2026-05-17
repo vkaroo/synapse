@@ -1,21 +1,21 @@
-name = "synapse"
+name = "ai-router"
 main = "src/worker.js"
 compatibility_date = "2024-12-01"
 compatibility_flags = ["nodejs_compat"]
 
 [vars]
-DASHBOARD_PASSWORD = "your-password-here"
+DASHBOARD_PASSWORD = "xfile9rtr"
 TELEGRAM_BOT_TOKEN = ""
 TELEGRAM_CHAT_ID = ""
 
 [[d1_databases]]
 binding = "DB"
-database_name = "synapse-db"
-database_id = "your-database-id-here"
+database_name = "ai-router-db"
+database_id = "556195d6-6250-4078-9b08-f015a67f9661"
 
 [[kv_namespaces]]
 binding = "KV"
-id = "your-kv-id-here"
+id = "ea691315d0a7425f8407eecca47c4b3c"
 
 [triggers]
 crons = ["*/30 * * * *"]

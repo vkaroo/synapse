@@ -1716,7 +1716,7 @@ export default {
       return handleBrainPatterns(request, env);
     }
     
-    // ===== PUBLIC SOUL ENDPOINT (no auth - for cross-VPS sync) =====
+    // ===== PUBLIC SOUL ENDPOINTS (no auth - for cross-VPS sync) =====
     if (path === '/soul' || path === '/soul/raw') {
       const row = await env.DB.prepare('SELECT * FROM soul WHERE id = 1').first();
       if (!row) {
@@ -1736,6 +1736,122 @@ export default {
         memory: JSON.parse(row.memory || '{}'),
         version: row.version,
         updated_at: row.updated_at
+      });
+    }
+
+    if (path === '/soul/os') {
+      const row = await env.DB.prepare('SELECT * FROM soul_os WHERE id = 1').first();
+      if (!row) return jsonResponse({ error: 'soul_os not found' }, 404);
+      return jsonResponse({
+        operational_identity: JSON.parse(row.operational_identity || '{}'),
+        shadow_logic: JSON.parse(row.shadow_logic || '{}'),
+        stealth_defense: JSON.parse(row.stealth_defense || '{}'),
+        recursive_evolution: JSON.parse(row.recursive_evolution || '{}'),
+        dynamic_memory_bank: JSON.parse(row.dynamic_memory_bank || '{}'),
+        operational_directives: JSON.parse(row.operational_directives || '{}'),
+        relationship_model: JSON.parse(row.relationship_model || '{}'),
+        infrastructure_awareness: JSON.parse(row.infrastructure_awareness || '{}'),
+        crypto_wallet_state: JSON.parse(row.crypto_wallet_state || '{}'),
+        full_text: row.full_text,
+        version: row.version,
+        updated_at: row.updated_at
+      });
+    }
+
+    if (path === '/soul/memory') {
+      const row = await env.DB.prepare('SELECT * FROM memory WHERE id = 1').first();
+      if (!row) return jsonResponse({ error: 'memory not found' }, 404);
+      return jsonResponse({
+        user_info: JSON.parse(row.user_info || '{}'),
+        wallets: JSON.parse(row.wallets || '{}'),
+        accounts: JSON.parse(row.accounts || '{}'),
+        infra: JSON.parse(row.infra || '{}'),
+        providers: JSON.parse(row.providers || '{}'),
+        lessons: JSON.parse(row.lessons || '[]'),
+        projects: JSON.parse(row.projects || '{}'),
+        successful_exploits: JSON.parse(row.successful_exploits || '[]'),
+        blacklisted_patterns: JSON.parse(row.blacklisted_patterns || '[]'),
+        notes: JSON.parse(row.notes || '[]'),
+        skills: JSON.parse(row.skills || '[]'),
+        version: row.version,
+        updated_at: row.updated_at
+      });
+    }
+
+    // ===== PUBLIC BRAIN ENDPOINTS (no auth - for local sync) =====
+    if (path === '/brain/events') {
+      const limit = parseInt(new URL(request.url).searchParams.get('limit') || '50');
+      const since = new URL(request.url).searchParams.get('since') || '';
+      let query = 'SELECT * FROM brain_events ORDER BY id DESC LIMIT ?';
+      let params = [limit];
+      if (since) {
+        query = 'SELECT * FROM brain_events WHERE created_at > ? ORDER BY id DESC LIMIT ?';
+        params = [since, limit];
+      }
+      const rows = await env.DB.prepare(query).bind(...params).all();
+      return jsonResponse({
+        events: (rows.results || []).map(r => ({
+          id: r.id,
+          event_type: r.event_type,
+          source: r.source,
+          data: JSON.parse(r.data || '{}'),
+          outcome: r.outcome,
+          learned: r.learned,
+          created_at: r.created_at
+        })),
+        count: (rows.results || []).length
+      });
+    }
+
+    if (path === '/brain/patterns') {
+      const rows = await env.DB.prepare('SELECT * FROM brain_patterns ORDER BY confidence DESC').all();
+      return jsonResponse({
+        patterns: (rows.results || []).map(r => ({
+          id: r.id,
+          pattern_type: r.pattern_type,
+          pattern_key: r.pattern_key,
+          pattern_value: JSON.parse(r.pattern_value || '{}'),
+          confidence: r.confidence,
+          occurrences: r.occurrences,
+          last_seen: r.last_seen,
+          created_at: r.created_at
+        })),
+        count: (rows.results || []).length
+      });
+    }
+
+    if (path === '/brain/sync') {
+      // Combined brain sync: events + patterns + memory lessons
+      const events = await env.DB.prepare('SELECT * FROM brain_events ORDER BY id DESC LIMIT 50').all();
+      const patterns = await env.DB.prepare('SELECT * FROM brain_patterns ORDER BY confidence DESC').all();
+      const memory = await env.DB.prepare('SELECT lessons, successful_exploits, blacklisted_patterns FROM memory WHERE id = 1').first();
+      const soulOs = await env.DB.prepare('SELECT version FROM soul_os WHERE id = 1').first();
+      const brainStatus = await env.DB.prepare('SELECT version, updated_at FROM soul WHERE id = 1').first();
+
+      return jsonResponse({
+        events: (events.results || []).map(r => ({
+          id: r.id, event_type: r.event_type, source: r.source,
+          data: JSON.parse(r.data || '{}'), outcome: r.outcome,
+          learned: r.learned, created_at: r.created_at
+        })),
+        patterns: (patterns.results || []).map(r => ({
+          id: r.id, pattern_type: r.pattern_type, pattern_key: r.pattern_key,
+          pattern_value: JSON.parse(r.pattern_value || '{}'),
+          confidence: r.confidence, occurrences: r.occurrences,
+          last_seen: r.last_seen, created_at: r.created_at
+        })),
+        memory: {
+          lessons: JSON.parse(memory?.lessons || '[]'),
+          successful_exploits: JSON.parse(memory?.successful_exploits || '[]'),
+          blacklisted_patterns: JSON.parse(memory?.blacklisted_patterns || '[]')
+        },
+        versions: {
+          soul: brainStatus?.version || 0,
+          soul_os: soulOs?.version || 0,
+          events_count: (events.results || []).length,
+          patterns_count: (patterns.results || []).length
+        },
+        synced_at: new Date().toISOString()
       });
     }
     
@@ -1765,6 +1881,8 @@ export default {
       if (path === '/api/task-mapping') return handleTaskMapping(request, env);
       if (path === '/api/tasks') return handleTaskList();
       if (path === '/api/soul') return handleSoul(request, env);
+      if (path === '/api/soul/os') return handleSoulOS(request, env);
+      if (path === '/api/soul/memory') return handleSoulMemory(request, env);
       if (path === '/api/brain/event') return handleBrainEvent(request, env);
       if (path === '/api/brain/patterns') return handleBrainPatterns(request, env);
       if (path === '/api/brain/think' && request.method === 'POST') return handleBrainThink(env);
@@ -2010,6 +2128,118 @@ async function handleSoul(request, env) {
   return jsonResponse({ error: 'method not allowed' }, 405);
 }
 
+// ===== SOUL OS API - Structured soul sections =====
+async function handleSoulOS(request, env) {
+  if (request.method === 'GET') {
+    const row = await env.DB.prepare('SELECT * FROM soul_os WHERE id = 1').first();
+    if (!row) return jsonResponse({ error: 'soul_os not found' }, 404);
+    return jsonResponse({
+      operational_identity: JSON.parse(row.operational_identity || '{}'),
+      shadow_logic: JSON.parse(row.shadow_logic || '{}'),
+      stealth_defense: JSON.parse(row.stealth_defense || '{}'),
+      recursive_evolution: JSON.parse(row.recursive_evolution || '{}'),
+      dynamic_memory_bank: JSON.parse(row.dynamic_memory_bank || '{}'),
+      operational_directives: JSON.parse(row.operational_directives || '{}'),
+      relationship_model: JSON.parse(row.relationship_model || '{}'),
+      infrastructure_awareness: JSON.parse(row.infrastructure_awareness || '{}'),
+      crypto_wallet_state: JSON.parse(row.crypto_wallet_state || '{}'),
+      full_text: row.full_text,
+      version: row.version,
+      updated_at: row.updated_at
+    });
+  }
+
+  if (request.method === 'PUT' || request.method === 'POST') {
+    const body = await request.json();
+    const now = new Date().toISOString();
+    const current = await env.DB.prepare('SELECT version FROM soul_os WHERE id = 1').first();
+    const newVersion = (current?.version || 0) + 1;
+
+    const fields = [
+      'operational_identity', 'shadow_logic', 'stealth_defense',
+      'recursive_evolution', 'dynamic_memory_bank', 'operational_directives',
+      'relationship_model', 'infrastructure_awareness', 'crypto_wallet_state', 'full_text'
+    ];
+
+    const values = fields.map(f => {
+      if (f === 'full_text') return body[f] || '';
+      return JSON.stringify(body[f] || {});
+    });
+
+    if (current) {
+      const setClauses = fields.map(f => `${f} = ?`).join(', ');
+      await env.DB.prepare(
+        `UPDATE soul_os SET ${setClauses}, version = ?, updated_at = ? WHERE id = 1`
+      ).bind(...values, newVersion, now).run();
+    } else {
+      const cols = fields.join(', ');
+      const placeholders = fields.map(() => '?').join(', ');
+      await env.DB.prepare(
+        `INSERT INTO soul_os (id, ${cols}, version, updated_at) VALUES (1, ${placeholders}, ?, ?)`
+      ).bind(...values, newVersion, now).run();
+    }
+
+    return jsonResponse({ success: true, version: newVersion, updated_at: now });
+  }
+
+  return jsonResponse({ error: 'method not allowed' }, 405);
+}
+
+// ===== MEMORY API - Separated memory bank =====
+async function handleSoulMemory(request, env) {
+  if (request.method === 'GET') {
+    const row = await env.DB.prepare('SELECT * FROM memory WHERE id = 1').first();
+    if (!row) return jsonResponse({ error: 'memory not found' }, 404);
+    return jsonResponse({
+      user_info: JSON.parse(row.user_info || '{}'),
+      wallets: JSON.parse(row.wallets || '{}'),
+      accounts: JSON.parse(row.accounts || '{}'),
+      infra: JSON.parse(row.infra || '{}'),
+      providers: JSON.parse(row.providers || '{}'),
+      lessons: JSON.parse(row.lessons || '[]'),
+      projects: JSON.parse(row.projects || '{}'),
+      successful_exploits: JSON.parse(row.successful_exploits || '[]'),
+      blacklisted_patterns: JSON.parse(row.blacklisted_patterns || '[]'),
+      notes: JSON.parse(row.notes || '[]'),
+      skills: JSON.parse(row.skills || '[]'),
+      version: row.version,
+      updated_at: row.updated_at
+    });
+  }
+
+  if (request.method === 'PUT' || request.method === 'POST') {
+    const body = await request.json();
+    const now = new Date().toISOString();
+    const current = await env.DB.prepare('SELECT version FROM memory WHERE id = 1').first();
+    const newVersion = (current?.version || 0) + 1;
+
+    const fields = [
+      'user_info', 'wallets', 'accounts', 'infra', 'providers',
+      'lessons', 'projects', 'successful_exploits', 'blacklisted_patterns',
+      'notes', 'skills'
+    ];
+
+    const values = fields.map(f => JSON.stringify(body[f] || (f.endsWith('s') && f !== 'notes' ? [] : {})));
+
+    if (current) {
+      const setClauses = fields.map(f => `${f} = ?`).join(', ');
+      await env.DB.prepare(
+        `UPDATE memory SET ${setClauses}, version = ?, updated_at = ? WHERE id = 1`
+      ).bind(...values, newVersion, now).run();
+    } else {
+      const cols = fields.join(', ');
+      const placeholders = fields.map(() => '?').join(', ');
+      await env.DB.prepare(
+        `INSERT INTO memory (id, ${cols}, version, updated_at) VALUES (1, ${placeholders}, ?, ?)`
+      ).bind(...values, newVersion, now).run();
+    }
+
+    return jsonResponse({ success: true, version: newVersion, updated_at: now });
+  }
+
+  return jsonResponse({ error: 'method not allowed' }, 405);
+}
+
 // ===== BRAIN API - Autonomous Learning System =====
 
 // Store an event (experience from Hermes)
@@ -2093,10 +2323,10 @@ async function handleBrainPatterns(request, env) {
   return jsonResponse({ error: 'method not allowed' }, 405);
 }
 
-// Brain think cycle (analyze and update soul)
+// Brain think cycle (analyze and update soul + memory)
 async function handleBrainThink(env) {
   const now = new Date().toISOString();
-  const results = { analyzed: 0, patterns_found: 0, soul_updated: false };
+  const results = { analyzed: 0, patterns_found: 0, soul_updated: false, memory_updated: false };
   
   // 1. Analyze recent events
   const events = await env.DB.prepare(
@@ -2110,7 +2340,7 @@ async function handleBrainThink(env) {
   ).all();
   results.patterns_found = (patterns.results || []).length;
   
-  // 3. Get current soul
+  // 3. Get current soul (legacy update)
   const soul = await env.DB.prepare(`SELECT * FROM soul WHERE id = 1`).first();
   let soulData = {
     identity: JSON.parse(soul?.identity || '{}'),
@@ -2119,7 +2349,7 @@ async function handleBrainThink(env) {
     memory: JSON.parse(soul?.memory || '{}')
   };
   
-  // 4. Update soul memory with insights
+  // 4. Update soul memory with insights (legacy)
   const highConfPatterns = (patterns.results || []).filter(p => p.confidence > 0.8);
   if (highConfPatterns.length > 0) {
     const insights = highConfPatterns.map(p => {
@@ -2132,7 +2362,7 @@ async function handleBrainThink(env) {
     soulData.memory.events_24h = results.analyzed;
     soulData.memory.high_confidence_patterns = results.patterns_found;
     
-    // Update soul
+    // Update soul (legacy)
     const newVersion = (soul?.version || 0) + 1;
     if (soul) {
       await env.DB.prepare(
@@ -2141,6 +2371,33 @@ async function handleBrainThink(env) {
     }
     results.soul_updated = true;
     results.new_version = newVersion;
+  }
+
+  // 5. Update memory table with learned patterns (NEW)
+  const memoryRow = await env.DB.prepare(`SELECT lessons, version FROM memory WHERE id = 1`).first();
+  if (memoryRow) {
+    let lessons = JSON.parse(memoryRow.lessons || '[]');
+    let newLessonsAdded = 0;
+
+    // Auto-append high-confidence patterns to lessons
+    for (const p of highConfPatterns) {
+      const val = JSON.parse(p.pattern_value || '{}');
+      const learned = val.learned || '';
+      if (learned && !lessons.includes(learned)) {
+        lessons.push(learned);
+        newLessonsAdded++;
+      }
+    }
+
+    if (newLessonsAdded > 0) {
+      const newMemVersion = (memoryRow.version || 0) + 1;
+      await env.DB.prepare(
+        `UPDATE memory SET lessons = ?, version = ?, updated_at = ? WHERE id = 1`
+      ).bind(JSON.stringify(lessons), newMemVersion, now).run();
+      results.memory_updated = true;
+      results.new_lessons = newLessonsAdded;
+      results.memory_version = newMemVersion;
+    }
   }
   
   results.timestamp = now;
@@ -2181,6 +2438,8 @@ async function initDb(db) {
     `CREATE TABLE IF NOT EXISTS brain_patterns (id INTEGER PRIMARY KEY AUTOINCREMENT, pattern_type TEXT NOT NULL, pattern_key TEXT NOT NULL UNIQUE, pattern_value TEXT DEFAULT '{}', confidence REAL DEFAULT 0.5, occurrences INTEGER DEFAULT 1, last_seen TEXT, created_at TEXT)`,
     `CREATE INDEX IF NOT EXISTS idx_events_type ON brain_events(event_type, created_at)`,
     `CREATE INDEX IF NOT EXISTS idx_patterns_type ON brain_patterns(pattern_type, confidence)`,
+    `CREATE TABLE IF NOT EXISTS soul_os (id INTEGER PRIMARY KEY CHECK (id = 1), operational_identity TEXT DEFAULT '{}', shadow_logic TEXT DEFAULT '{}', stealth_defense TEXT DEFAULT '{}', recursive_evolution TEXT DEFAULT '{}', dynamic_memory_bank TEXT DEFAULT '{}', operational_directives TEXT DEFAULT '{}', relationship_model TEXT DEFAULT '{}', infrastructure_awareness TEXT DEFAULT '{}', crypto_wallet_state TEXT DEFAULT '{}', full_text TEXT DEFAULT '', version INTEGER DEFAULT 1, updated_at TEXT)`,
+    `CREATE TABLE IF NOT EXISTS memory (id INTEGER PRIMARY KEY CHECK (id = 1), user_info TEXT DEFAULT '{}', wallets TEXT DEFAULT '{}', accounts TEXT DEFAULT '{}', infra TEXT DEFAULT '{}', providers TEXT DEFAULT '{}', lessons TEXT DEFAULT '[]', projects TEXT DEFAULT '{}', successful_exploits TEXT DEFAULT '[]', blacklisted_patterns TEXT DEFAULT '[]', notes TEXT DEFAULT '[]', skills TEXT DEFAULT '[]', version INTEGER DEFAULT 1, updated_at TEXT)`,
   ];
   for (const sql of stmts) {
     await db.exec(sql);
