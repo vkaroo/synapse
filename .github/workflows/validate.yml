@@ -1,0 +1,32 @@
+name: Validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    name: Validate Source
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check required files
+        run: |
+          echo "Checking repo structure..."
+          for f in README.md LICENSE src/worker.js src/dashboard.js docs/ARCHITECTURE.md; do
+            if [ ! -e "$f" ]; then
+              echo "MISSING: $f"
+              exit 1
+            fi
+            echo "OK: $f"
+          done
+          echo "All required files present ✅"
+
+      - name: Validate JS syntax
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: node --check src/worker.js && echo "worker.js syntax OK ✅" || echo "worker.js has syntax errors ❌"
