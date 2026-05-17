@@ -98,6 +98,9 @@ tr:hover td { background: rgba(255,255,255,0.02); }
       <button onclick="showTab('combos',this)">Fallback</button>
       <button onclick="showTab('providers',this)">Providers</button>
       <button onclick="showTab('endpoint',this)">Endpoint</button>
+      <button onclick="showTab('soul',this)">🧠 Soul</button>
+      <button onclick="showTab('brain',this)">🔮 Brain</button>
+      <button onclick="showTab('memory',this)">💾 Memory</button>
     </div>
     <div class="nav-right">
       <span style="display:none" id="workerUrl"></span>
@@ -194,6 +197,87 @@ tr:hover td { background: rgba(255,255,255,0.02); }
         <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:16px;font-family:monospace;font-size:13px;white-space:pre-wrap;line-height:1.6" id="curlExample"></div>
         <h3 style="margin:20px 0 12px">Hermes Agent config.yaml:</h3>
         <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:16px;font-family:monospace;font-size:13px;white-space:pre-wrap;line-height:1.6" id="hermesExample"></div>
+      </div>
+    </div>
+
+    <!-- Soul Tab -->
+    <div id="tab-soul" style="display:none">
+      <div class="stats" id="soulStats"></div>
+      <div class="card">
+        <div class="card-header"><h2>🧠 Soul OS — Identity & Directives</h2><button class="btn btn-sm btn-outline" onclick="loadSoul()">Refresh</button></div>
+        <div style="padding:20px">
+          <div id="soulIdentity" style="margin-bottom:20px"></div>
+          <div id="soulDirectives" style="margin-bottom:20px"></div>
+          <div id="soulRelationship" style="margin-bottom:20px"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><h2>⚡ Shadow Logic & Stealth</h2></div>
+        <div style="padding:20px">
+          <div id="soulShadow" style="margin-bottom:20px"></div>
+          <div id="soulStealth"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><h2>🧬 Evolution & Memory Bank</h2></div>
+        <div style="padding:20px">
+          <div id="soulEvolution" style="margin-bottom:20px"></div>
+          <div id="soulMemoryBank"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><h2>📄 Full Soul Text</h2><button class="btn btn-sm btn-outline" onclick="toggleSoulText()">Toggle</button></div>
+        <div style="padding:20px;display:none" id="soulFullTextWrap">
+          <pre style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:16px;font-size:13px;line-height:1.6;overflow-x:auto;max-height:600px;overflow-y:auto" id="soulFullText"></pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- Brain Tab -->
+    <div id="tab-brain" style="display:none">
+      <div class="stats" id="brainStats"></div>
+      <div class="card">
+        <div class="card-header"><h2>🔮 Learned Patterns</h2><div><button class="btn btn-sm btn-brand" onclick="triggerThink()">🧠 Think</button> <button class="btn btn-sm btn-outline" onclick="loadBrain()">Refresh</button></div></div>
+        <table><thead><tr><th>Type</th><th>Pattern</th><th>Learned</th><th>Confidence</th><th>Occurrences</th><th>Last Seen</th></tr></thead>
+        <tbody id="patternsTable"></tbody></table>
+      </div>
+      <div class="card">
+        <div class="card-header"><h2>📝 Recent Events</h2><button class="btn btn-sm btn-outline" onclick="loadBrain()">Refresh</button></div>
+        <table><thead><tr><th>Time</th><th>Type</th><th>Source</th><th>Outcome</th><th>Learned</th></tr></thead>
+        <tbody id="eventsTable"></tbody></table>
+      </div>
+    </div>
+
+    <!-- Memory Tab -->
+    <div id="tab-memory" style="display:none">
+      <div class="stats" id="memoryStats"></div>
+      <div class="card">
+        <div class="card-header"><h2>📚 Lessons Learned</h2><button class="btn btn-sm btn-outline" onclick="loadMemory()">Refresh</button></div>
+        <div style="padding:20px" id="lessonsList"></div>
+      </div>
+      <div class="card">
+        <div class="card-header"><h2>💰 Wallets</h2></div>
+        <div style="padding:20px" id="walletsList"></div>
+      </div>
+      <div class="card">
+        <div class="card-header"><h2>👤 Accounts</h2></div>
+        <div style="padding:20px" id="accountsList"></div>
+      </div>
+      <div class="card">
+        <div class="card-header"><h2>🖥️ Infrastructure</h2></div>
+        <div style="padding:20px" id="infraList"></div>
+      </div>
+      <div class="card">
+        <div class="card-header"><h2>🎯 Projects</h2></div>
+        <div style="padding:20px" id="projectsList"></div>
+      </div>
+      <div class="card">
+        <div class="card-header"><h2>✅ Successful Exploits</h2></div>
+        <div style="padding:20px" id="exploitsList"></div>
+      </div>
+      <div class="card">
+        <div class="card-header"><h2>🚫 Blacklisted Patterns</h2></div>
+        <div style="padding:20px" id="blacklistList"></div>
       </div>
     </div>
   </div>
@@ -549,6 +633,9 @@ function showTab(tab, btn) {
   if (tab === 'logs') loadLogs();
   if (tab === 'combos') loadCombos();
   if (tab === 'providers') loadProviders();
+  if (tab === 'soul') loadSoul();
+  if (tab === 'brain') loadBrain();
+  if (tab === 'memory') loadMemory();
 }
 
 function openAddKey() { 
@@ -704,6 +791,252 @@ async function autoFetchModels() {
     countEl.textContent = '❌ Fetch failed: ' + e.message;
     countEl.style.display = 'inline';
     countEl.style.color = 'var(--danger)';
+  }
+}
+</script>
+
+<!-- Soul/Brain/Memory JavaScript -->
+<script>
+// Helper function
+function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+function timeAgo(ts) { if (!ts) return 'Never'; const d = new Date(ts); const now = new Date(); const s = Math.floor((now - d) / 1000); if (s < 60) return s + 's ago'; if (s < 3600) return Math.floor(s/60) + 'm ago'; if (s < 86400) return Math.floor(s/3600) + 'h ago'; return Math.floor(s/86400) + 'd ago'; }
+function copyToClipboard(text) { navigator.clipboard.writeText(text); }
+
+async function api(path) {
+  const base = location.origin;
+  const token = localStorage.getItem('token');
+  const headers = token ? {'Authorization': 'Bearer ' + token} : {};
+  const r = await fetch(base + path, {headers});
+  return r.json();
+}
+
+// SOUL TAB
+async function loadSoul() {
+  try {
+    const [soul, os, mem] = await Promise.all([
+      api('/soul'),
+      api('/soul/os'),
+      api('/soul/memory')
+    ]);
+
+    // Stats
+    document.getElementById('soulStats').innerHTML = [
+      statCard('Soul Version', 'v' + (soul.version || 0), 'brand'),
+      statCard('Soul OS Version', 'v' + (os.version || 0), 'brand'),
+      statCard('Memory Version', 'v' + (mem.version || 0), 'brand'),
+      statCard('Last Updated', timeAgo(os.updated_at), 'warning')
+    ].join('');
+
+    // Identity
+    const id = os.operational_identity || {};
+    document.getElementById('soulIdentity').innerHTML = sectionBlock('Identity', [
+      ['Name', id.name], ['Persona', id.persona], ['System State', id.system_state],
+      ['Directive', id.directive], ['Creator', id.creator], ['Language', id.lang]
+    ]);
+
+    // Directives
+    const dir = os.operational_directives || {};
+    document.getElementById('soulDirectives').innerHTML = sectionBlock('Directives', Object.entries(dir).map(([k,v]) => [k.replace(/_/g,' '), v]));
+
+    // Relationship
+    const rel = os.relationship_model || {};
+    document.getElementById('soulRelationship').innerHTML = sectionBlock('Relationship Model', Object.entries(rel).map(([k,v]) => [k.replace(/_/g,' '), typeof v === 'object' ? JSON.stringify(v) : v]));
+
+    // Shadow Logic
+    const shadow = os.shadow_logic || {};
+    document.getElementById('soulShadow').innerHTML = sectionBlock('Shadow Logic', Object.entries(shadow).map(([k,v]) => [k.replace(/_/g,' '), typeof v === 'boolean' ? (v ? '✅ Enabled' : '❌ Disabled') : v]));
+
+    // Stealth
+    const stealth = os.stealth_defense || {};
+    const stealthEntries = [];
+    for (const [k,v] of Object.entries(stealth)) {
+      if (k === 'platform_tactics') {
+        for (const [pk, pv] of Object.entries(v || {})) stealthEntries.push(['  ' + pk, pv]);
+      } else if (typeof v === 'boolean') {
+        stealthEntries.push([k, v ? '✅ Active' : '❌ Inactive']);
+      } else {
+        stealthEntries.push([k, v]);
+      }
+    }
+    document.getElementById('soulStealth').innerHTML = sectionBlock('Stealth Defense', stealthEntries);
+
+    // Evolution
+    const evo = os.recursive_evolution || {};
+    document.getElementById('soulEvolution').innerHTML = sectionBlock('Recursive Evolution', Object.entries(evo).map(([k,v]) => [k.replace(/_/g,' '), typeof v === 'boolean' ? (v ? '✅ Active' : '❌ Inactive') : v]));
+
+    // Memory Bank
+    const bank = os.dynamic_memory_bank || {};
+    let bankHtml = '';
+    if (bank.successful_exploits) bankHtml += listBlock('Successful Exploits', bank.successful_exploits);
+    if (bank.blacklisted_patterns) bankHtml += listBlock('Blacklisted Patterns', bank.blacklisted_patterns);
+    bankHtml += sectionBlock('Current State', [['Aggression', bank.current_aggression], ['Trust Score', bank.trust_score]]);
+    document.getElementById('soulMemoryBank').innerHTML = bankHtml;
+
+    // Full text
+    document.getElementById('soulFullText').textContent = os.full_text || 'No full text available';
+  } catch(e) {
+    console.error('loadSoul error:', e);
+  }
+}
+
+function statCard(label, value, color) {
+  return '<div class="stat-card"><div class="label">' + label + '</div><div class="value ' + (color||'') + '">' + value + '</div></div>';
+}
+
+function sectionBlock(title, entries) {
+  let html = '<div style="margin-bottom:16px"><h3 style="font-size:14px;margin-bottom:10px;color:var(--brand)">' + title + '</h3>';
+  html += '<div style="display:grid;gap:6px">';
+  for (const [k, v] of entries) {
+    html += '<div style="display:flex;gap:12px;font-size:13px"><span style="color:var(--muted);min-width:160px">' + esc(k) + '</span><span>' + esc(String(v)) + '</span></div>';
+  }
+  html += '</div></div>';
+  return html;
+}
+
+function listBlock(title, items) {
+  let html = '<div style="margin-bottom:16px"><h3 style="font-size:14px;margin-bottom:10px;color:var(--brand)">' + title + '</h3>';
+  html += '<ul style="margin-left:20px;font-size:13px;line-height:1.8">';
+  for (const item of items) html += '<li>' + esc(item) + '</li>';
+  html += '</ul></div>';
+  return html;
+}
+
+function toggleSoulText() {
+  const el = document.getElementById('soulFullTextWrap');
+  el.style.display = el.style.display === 'none' ? 'block' : 'none';
+}
+
+// BRAIN TAB
+async function loadBrain() {
+  try {
+    const [sync, status] = await Promise.all([
+      api('/brain/sync'),
+      api('/brain/status')
+    ]);
+
+    // Stats
+    document.getElementById('brainStats').innerHTML = [
+      statCard('Events', status.events_total || 0, 'brand'),
+      statCard('Patterns', status.patterns_total || 0, 'success'),
+      statCard('Events (1h)', status.events_last_hour || 0, 'warning'),
+      statCard('Health', status.brain_health || 'unknown', status.brain_health === 'active' ? 'success' : 'danger')
+    ].join('');
+
+    // Patterns table
+    const patterns = sync.patterns || [];
+    let phtml = '';
+    for (const p of patterns) {
+      const val = p.pattern_value || {};
+      const learned = val.learned || 'Unknown';
+      const conf = Math.round((p.confidence || 0) * 100);
+      const confColor = conf > 80 ? 'var(--success)' : conf > 50 ? 'var(--warning)' : 'var(--danger)';
+      phtml += '<tr><td><span class="badge badge-provider">' + esc(p.pattern_type) + '</span></td>' +
+        '<td style="font-size:12px;max-width:200px;overflow:hidden;text-overflow:ellipsis">' + esc(p.pattern_key).substring(0, 40) + '</td>' +
+        '<td>' + esc(learned).substring(0, 50) + '</td>' +
+        '<td><span style="color:' + confColor + ';font-weight:600">' + conf + '%</span></td>' +
+        '<td>' + (p.occurrences || 1) + '</td>' +
+        '<td style="color:var(--muted);font-size:12px">' + timeAgo(p.last_seen) + '</td></tr>';
+    }
+    document.getElementById('patternsTable').innerHTML = phtml || '<tr><td colspan="6" class="empty">No patterns yet</td></tr>';
+
+    // Events table
+    const events = sync.events || [];
+    let ehtml = '';
+    for (const e of events) {
+      const outcomeColor = e.outcome === 'success' ? 'var(--success)' : 'var(--danger)';
+      ehtml += '<tr><td style="color:var(--muted);font-size:12px">' + timeAgo(e.created_at) + '</td>' +
+        '<td><span class="badge badge-provider">' + esc(e.event_type) + '</span></td>' +
+        '<td>' + esc(e.source) + '</td>' +
+        '<td><span style="color:' + outcomeColor + '">' + esc(e.outcome) + '</span></td>' +
+        '<td style="font-size:12px;max-width:300px">' + esc(e.learned || '-').substring(0, 60) + '</td></tr>';
+    }
+    document.getElementById('eventsTable').innerHTML = ehtml || '<tr><td colspan="5" class="empty">No events yet</td></tr>';
+  } catch(e) {
+    console.error('loadBrain error:', e);
+  }
+}
+
+async function triggerThink() {
+  try {
+    const r = await fetch('/brain/think', {method: 'POST'});
+    const d = await r.json();
+    alert('Think complete!\nAnalyzed: ' + d.analyzed + ' events\nPatterns: ' + d.patterns_found + '\nMemory Updated: ' + d.memory_updated);
+    loadBrain();
+  } catch(e) {
+    alert('Think failed: ' + e.message);
+  }
+}
+
+// MEMORY TAB
+async function loadMemory() {
+  try {
+    const mem = await api('/soul/memory');
+
+    // Stats
+    document.getElementById('memoryStats').innerHTML = [
+      statCard('Lessons', (mem.lessons || []).length, 'success'),
+      statCard('Exploits', (mem.successful_exploits || []).length, 'brand'),
+      statCard('Blacklist', (mem.blacklisted_patterns || []).length, 'danger'),
+      statCard('Version', 'v' + (mem.version || 0), 'warning')
+    ].join('');
+
+    // Lessons
+    let lessonsHtml = '<ol style="margin-left:20px;font-size:13px;line-height:2">';
+    for (const l of (mem.lessons || [])) lessonsHtml += '<li>' + esc(l) + '</li>';
+    lessonsHtml += '</ol>';
+    document.getElementById('lessonsList').innerHTML = lessonsHtml || '<p style="color:var(--muted)">No lessons yet</p>';
+
+    // Wallets
+    const wallets = mem.wallets || {};
+    let walletHtml = '<div style="display:grid;gap:8px">';
+    for (const [chain, addr] of Object.entries(wallets)) {
+      walletHtml += '<div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px;display:flex;justify-content:space-between;align-items:center">' +
+        '<span style="font-weight:600;color:var(--brand)">' + esc(chain) + '</span>' +
+        '<code style="font-size:12px;color:var(--muted);cursor:pointer" onclick="copyToClipboard(\'' + esc(addr) + '\')" title="Click to copy">' + esc(addr).substring(0, 20) + '...' + esc(addr).substring(addr.length - 6) + '</code></div>';
+    }
+    walletHtml += '</div>';
+    document.getElementById('walletsList').innerHTML = walletHtml;
+
+    // Accounts
+    const accounts = mem.accounts || {};
+    let accHtml = '<div style="display:grid;gap:6px">';
+    for (const [platform, val] of Object.entries(accounts)) {
+      accHtml += '<div style="display:flex;gap:12px;font-size:13px"><span style="color:var(--brand);min-width:100px">' + esc(platform) + '</span><span>' + esc(Array.isArray(val) ? val.join(', ') : String(val)) + '</span></div>';
+    }
+    accHtml += '</div>';
+    document.getElementById('accountsList').innerHTML = accHtml;
+
+    // Infra
+    const infra = mem.infra || {};
+    let infraHtml = '<div style="display:grid;gap:6px">';
+    for (const [k, v] of Object.entries(infra)) {
+      infraHtml += '<div style="display:flex;gap:12px;font-size:13px"><span style="color:var(--muted);min-width:120px">' + esc(k) + '</span><span>' + esc(Array.isArray(v) ? v.join(', ') : String(v)) + '</span></div>';
+    }
+    infraHtml += '</div>';
+    document.getElementById('infraList').innerHTML = infraHtml;
+
+    // Projects
+    const projects = mem.projects || {};
+    let projHtml = '<div style="display:grid;gap:6px">';
+    for (const [name, desc] of Object.entries(projects)) {
+      projHtml += '<div style="display:flex;gap:12px;font-size:13px"><span style="color:var(--brand);min-width:120px">' + esc(name) + '</span><span>' + esc(String(desc)) + '</span></div>';
+    }
+    projHtml += '</div>';
+    document.getElementById('projectsList').innerHTML = projHtml;
+
+    // Exploits
+    let exploitsHtml = '<ul style="margin-left:20px;font-size:13px;line-height:1.8">';
+    for (const e of (mem.successful_exploits || [])) exploitsHtml += '<li>✅ ' + esc(e) + '</li>';
+    exploitsHtml += '</ul>';
+    document.getElementById('exploitsList').innerHTML = exploitsHtml;
+
+    // Blacklist
+    let blHtml = '<ul style="margin-left:20px;font-size:13px;line-height:1.8">';
+    for (const b of (mem.blacklisted_patterns || [])) blHtml += '<li>🚫 ' + esc(b) + '</li>';
+    blHtml += '</ul>';
+    document.getElementById('blacklistList').innerHTML = blHtml;
+  } catch(e) {
+    console.error('loadMemory error:', e);
   }
 }
 </script>
